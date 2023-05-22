@@ -23,43 +23,41 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.openmrs.OpenmrsObject;
 import org.openmrs.api.APIException;
-import org.openmrs.api.db.hibernate.DbSession;
-import org.openmrs.api.db.hibernate.DbSessionFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Provides access to a data source through hibernate.
  */
 public class HibernateRepository implements IHibernateRepository {
-	private DbSessionFactory sessionFactory;
+	private SessionFactory sessionFactory;
 
-	public HibernateRepository(DbSessionFactory sessionFactory) {
+	public HibernateRepository(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
 
-	public DbSessionFactory getSessionFactory() {
+	public SessionFactory getSessionFactory() {
 		return sessionFactory;
 	}
 
-	public void setSessionFactory(DbSessionFactory sessionFactory) {
+	public void setSessionFactory(SessionFactory sessionFactory) {
 		this.sessionFactory = sessionFactory;
 	}
 
 	@Override
 	public Query createQuery(String query) {
-		DbSession session = sessionFactory.getCurrentSession();
+		Session session = sessionFactory.getCurrentSession();
 		return session.createQuery(query);
 	}
 
 	@Override
 	public <E extends OpenmrsObject> Criteria createCriteria(Class<E> cls) {
-		DbSession session = sessionFactory.getCurrentSession();
+		Session session = sessionFactory.getCurrentSession();
 		return session.createCriteria(cls);
 	}
 
 	@Override
 	public <E extends OpenmrsObject> E save(E entity) {
-		DbSession session = sessionFactory.getCurrentSession();
+		Session session = sessionFactory.getCurrentSession();
 
 		try {
 			session.saveOrUpdate(entity);
@@ -74,7 +72,7 @@ public class HibernateRepository implements IHibernateRepository {
 	@Override
 	@Transactional
 	public void saveAll(Collection<? extends OpenmrsObject> collection) {
-		DbSession session = sessionFactory.getCurrentSession();
+		Session session = sessionFactory.getCurrentSession();
 		try {
 
 			if (collection != null && !collection.isEmpty()) {
@@ -89,7 +87,7 @@ public class HibernateRepository implements IHibernateRepository {
 
 	@Override
 	public <E extends OpenmrsObject> void delete(E entity) {
-		DbSession session = sessionFactory.getCurrentSession();
+		Session session = sessionFactory.getCurrentSession();
 		try {
 			session.delete(entity);
 		} catch (Exception ex) {
@@ -121,7 +119,7 @@ public class HibernateRepository implements IHibernateRepository {
 	@Override
 	@SuppressWarnings("unchecked")
 	public <E extends OpenmrsObject> E selectSingle(Class<E> cls, Serializable id) {
-		DbSession session = sessionFactory.getCurrentSession();
+		Session session = sessionFactory.getCurrentSession();
 
 		try {
 			return (E)session.get(cls, id);
@@ -151,7 +149,7 @@ public class HibernateRepository implements IHibernateRepository {
 	@Override
 	@SuppressWarnings("unchecked")
 	public <E extends OpenmrsObject> List<E> select(Class<E> cls) {
-		DbSession session = sessionFactory.getCurrentSession();
+		Session session = sessionFactory.getCurrentSession();
 
 		try {
 			Criteria search = session.createCriteria(cls);

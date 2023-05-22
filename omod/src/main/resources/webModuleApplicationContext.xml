@@ -11,7 +11,7 @@
 
 
 	<!-- Annotation based controllers -->
-	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>
+<!--	<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping"/>-->
 
 	<bean class="org.openmrs.module.openhmis.commons.uiframework.UiConfigurationCommons" />
 
