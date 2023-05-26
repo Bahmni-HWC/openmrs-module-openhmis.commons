@@ -16,13 +16,14 @@ package org.openmrs.module.openhmis.commons.api;
 import org.openmrs.test.BaseModuleContextSensitiveTest;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 /**
  * Base class for OpenHMIS tests
  */
 public abstract class BaseModuleContextTest extends BaseModuleContextSensitiveTest {
 	@Override
-	public void executeDataSet(String datasetFilename) throws Exception {
+	public void executeDataSet(String datasetFilename) {
 		Connection conn = super.getConnection();
 		try {
 			conn.prepareStatement("SET REFERENTIAL_INTEGRITY FALSE").execute();
@@ -32,8 +33,14 @@ public abstract class BaseModuleContextTest extends BaseModuleContextSensitiveTe
 			String datasetFilenameToUse = TestUtil.getVersionedFileIfExists(datasetFilename);
 
 			super.executeDataSet(datasetFilenameToUse);
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
 		} finally {
-			conn.prepareStatement("SET REFERENTIAL_INTEGRITY TRUE").execute();
+			try {
+				conn.prepareStatement("SET REFERENTIAL_INTEGRITY TRUE").execute();
+			} catch (SQLException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 }

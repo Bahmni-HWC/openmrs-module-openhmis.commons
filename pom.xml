@@ -54,7 +54,7 @@
 
 	<!-- default properties for installation -->
 	<properties>
-		<openMRSVersion>1.9.9</openMRSVersion>
+		<openMRSVersion>2.5.10</openMRSVersion>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<javaCompilerVersion>1.7</javaCompilerVersion>
 	</properties>
